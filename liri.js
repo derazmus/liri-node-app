@@ -15,7 +15,6 @@ var userInput= process.argv[3];
 
 // liri commands
 
-//movies
 
   if (userCommand === "movie-this"){
      movieThis();
@@ -25,7 +24,16 @@ var userInput= process.argv[3];
     tweetThis();
   }
 
+//omdb-movies
+
 function movieThis(){
+
+  // if no movie is entered, will display infor for "Mr. Nobody"
+
+  if (process.argv[3] === undefined) {
+        console.log("You did not make a choice so I will choose for you...How about Mr. Nobody")
+        userInput = "Mr. Nobody";
+        }
    
   var queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=40e9cece";
 
@@ -34,8 +42,7 @@ function movieThis(){
             // If the request is successful
              if (!error && response.statusCode === 200) {
 
-//              // Parse the body of the site and recover just the imdbRating
-//              // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+            // console log info requesed from omdb
             console.log("Title: " + JSON.parse(body).Title);
             console.log("Release Year: " + JSON.parse(body).Year);
             console.log("IMDB rating: " + JSON.parse(body).imdbRating);
@@ -52,16 +59,16 @@ function movieThis(){
 
 function tweetThis(){
 
-
-
-
+      //var for keys
       var client = new Twitter(keys);
-       
+
+      //var for twitter and "gets" feed, post to console.log 
       var params = {screen_name: 'CodingQT'};
       client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
-          for ( var i= 0; i < 2; i++){
-            console.log(tweets[i].text);
+          for ( var i= 0; i < 20; i++){
+            console.log("++++++++++++++twitter feed++++++++++++++++");
+            console.log(tweets[i].text + " (Posted: " + tweets[i].created_at + ")");  
           }
          
         }
