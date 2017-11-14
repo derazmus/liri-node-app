@@ -1,10 +1,12 @@
 
 //variable for all NPM packages
 var keys = require('./keys.js');
+//var spotkeys = require('./spotify-keys.js');
 var request = require("request");
 var Twitter = require("twitter");
-var spotify = require("node-spotify-api");
+var Spotify = require("node-spotify-api");
 var fs = require("fs");
+// var random = require('./random.txt');
 
 //variable for commaned
 var userCommand = process.argv[2]
@@ -14,8 +16,6 @@ var userInput= process.argv[3];
 
 
 // liri commands
-
-
   if (userCommand === "movie-this"){
      movieThis();
    }
@@ -24,8 +24,16 @@ var userInput= process.argv[3];
     tweetThis();
   }
 
-//omdb-movies
+  else if (userCommand === "spotify-this-song"){
+    spotifyThis();
+  }
 
+  else if(userCommand === "do-what-it-says"){
+    doThis();
+  }
+
+//omdb-movies
+// only works for one word titles
 function movieThis(){
 
   // if no movie is entered, will display infor for "Mr. Nobody"
@@ -56,7 +64,6 @@ function movieThis(){
 };
 
 //twitter
-
 function tweetThis(){
 
       //var for keys
@@ -66,20 +73,61 @@ function tweetThis(){
       var params = {screen_name: 'CodingQT'};
       client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
-          for ( var i= 0; i < 20; i++){
+          for ( var i= 0; i < tweets.length; i++){
             console.log("++++++++++++++twitter feed++++++++++++++++");
             console.log(tweets[i].text + " (Posted: " + tweets[i].created_at + ")");  
-          }
+           }
          
         }
       });
+    };
+
+//spotify
+
+
+//spotify api function//
+//works but seems to give you the first occurence of the song, when you give no song gives you The Sign but not by ace of base. 
+function spotifyThis() {
+
+  var spotify = new Spotify({
+   id:'bb542bc00ed54225a0c3060059579c70',
+  secret: '95824cd34f0c46dd87857af5e86a3502',
+});
+    var songSearch;
+
+    if (userInput === undefined) {
+        songSearch = "The Sign"
+    } else {
+        songSearch = userInput;
+    } 
+
+    spotify.search({  type: 'track', query: songSearch},  function(err,  data)  {    
+        if  ( err )  {        
+            console.log('Error occurred: '  +  err);        
+        } else {
+            console.log("Artist: " + data.tracks.items[0].artists[0].name);
+            console.log("Song: " + data.tracks.items[0].name);
+            console.log("Preview Link: " + data.tracks.items[0].preview_url);
+            console.log("Album: " + data.tracks.items[0].album.name);
+        }
+    });
+};
+
+ //do what it says
+ function doThis() {
+  
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    console.log(data);
+
+  });
+};
 
 
 
 
 
 
-}
+
 
  
 	
