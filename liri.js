@@ -8,14 +8,14 @@ var Spotify = require("node-spotify-api");
 var fs = require("fs");
 // var random = require('./random.txt');
 
-//variable for commaned
-var userCommand = process.argv[2]
+// //variable for commaned
+// var userCommand = process.argv[2]
 
-//variable for input user enters
-var userInput= process.argv[3];
+// //variable for input user enters
+ var userInput= process.argv[3];
 
-
-// liri commands
+ // liri commands
+function commands(userCommand, userInput) {
   if (userCommand === "movie-this"){
      movieThis();
    }
@@ -25,15 +25,18 @@ var userInput= process.argv[3];
   }
 
   else if (userCommand === "spotify-this-song"){
-    spotifyThis();
+    spotifyThis(userInput);
   }
 
-  else if(userCommand === "do-what-it-says"){
+  else if (userCommand === "do-what-it-says"){
     doThis();
   }
+};
+
+
 
 //omdb-movies
-// only works for one word titles
+// only works for one word titles, will run multiple word if use -, think what I need to do is use a for loop. 
 function movieThis(){
 
   // if no movie is entered, will display infor for "Mr. Nobody"
@@ -82,18 +85,16 @@ function tweetThis(){
       });
     };
 
-//spotify
-
 
 //spotify api function//
 //works but seems to give you the first occurence of the song, when you give no song gives you The Sign but not by ace of base. 
-function spotifyThis() {
+function spotifyThis(songSearch) {
 
   var spotify = new Spotify({
    id:'bb542bc00ed54225a0c3060059579c70',
   secret: '95824cd34f0c46dd87857af5e86a3502',
 });
-    var songSearch;
+    //var songSearch;
 
     if (userInput === undefined) {
         songSearch = "The Sign"
@@ -114,13 +115,32 @@ function spotifyThis() {
 };
 
  //do what it says
+ //not currently working, have no idea how to do this one. 
  function doThis() {
   
   fs.readFile("random.txt", "utf8", function(error, data) {
-    console.log(data);
+    //console.log(data);
+
+    var dataSplit = data.split(",");
+
+    if (dataSplit === 2){
+      commands(dataSplit[0], dataSplit[1]);
+      //console.log(dataSplit);
+    } 
+
+    else if (dataSplit === 1) {
+      commands(dataSplit[0]);
+
+    }
+
+    console.log(dataSplit)
 
   });
+
 };
+
+
+commands(process.argv[2], process.argv[3]);
 
 
 
