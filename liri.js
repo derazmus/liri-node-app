@@ -87,7 +87,7 @@ function tweetThis(){
 
 
 //spotify api function//
-//works but seems to give you the first occurence of the song, when you give no song gives you The Sign but not by ace of base. 
+//works but seems to give you the first occurence of the song, when you give no song gives you The Sign but not by Ace of Base. 
 function spotifyThis(songSearch) {
 
   var spotify = new Spotify({
@@ -118,23 +118,25 @@ function spotifyThis(songSearch) {
  //not currently working, have no idea how to do this one. 
  function doThis() {
   
-  fs.readFile("random.txt", "utf8", function(error, data) {
+fs.readFile("random.txt", "utf8", function(error, data) {
     //console.log(data);
 
     var dataSplit = data.split(",");
+    // commands(dataSplit[0], dataSplit[1]);
+    // if (dataSplit === 2){
+    //   commands(dataSplit[0], dataSplit[1]);
+    //   //console.log(dataSplit);
+    // } 
 
-    if (dataSplit === 2){
-      commands(dataSplit[0], dataSplit[1]);
-      //console.log(dataSplit);
-    } 
+    // else if (dataSplit === 1) {
+    //   commands(dataSplit[0]);
 
-    else if (dataSplit === 1) {
-      commands(dataSplit[0]);
+    // }
 
-    }
-
-    console.log(dataSplit)
-
+    // console.log(dataSplit[0],dataSplit[1])
+    userInput = dataSplit[1]
+    // spotifyThis();
+    commands(dataSplit[0], userInput);
   });
 
 };
